@@ -9,10 +9,6 @@ import {
     TextInput
 } from 'react-native';
 
-// Icon
-import Feather from 'react-native-vector-icons/Feather';
-Feather.loadFont();
-
 class DropDownPicker extends React.Component {
     constructor(props) {
         super(props);
@@ -49,7 +45,6 @@ class DropDownPicker extends React.Component {
             choice: props.multiple ? items : {
                 label: choice.location.name,
                 value: choice.location.id,
-                icon: choice.icon
             },
             searchableText: null,
             isVisible: props.isVisible,
@@ -67,14 +62,13 @@ class DropDownPicker extends React.Component {
     static getDerivedStateFromProps(props, state) {
         // Change default value (! multiple)
         if (!state.props.multiple && props.defaultValue !== state.props.defaultValue) {
-            const { label, value, icon } = props.defaultValue === null ? {
+            const { label, value } = props.defaultValue === null ? {
                 label: null,
                 value: null,
-                icon: () => { }
             } : props.items.find(item => item.value === props.defaultValue);
             return {
                 choice: {
-                    label, value, icon
+                    label, value
                 },
                 props: {
                     ...state.props,
@@ -157,7 +151,6 @@ class DropDownPicker extends React.Component {
         return {
             label: null,
             value: null,
-            icon: () => { }
         }
     }
 
@@ -286,7 +279,6 @@ class DropDownPicker extends React.Component {
                 choice: {
                     label: item.location.name,
                     value: item.location.id,
-                    icon: item.icon
                 },
                 isVisible: false,
                 props: {
@@ -399,8 +391,6 @@ class DropDownPicker extends React.Component {
                         this.state.isVisible && styles.noBottomRadius
                     ]}
                 >
-
-                    {this.state.choice.icon && !multiple && this.state.choice.icon()}
                     <Text style={[
                         { color: 'red' }, // default label color
                         this.props.labelStyle,
@@ -409,7 +399,6 @@ class DropDownPicker extends React.Component {
                             marginRight: (this.props.labelStyle.hasOwnProperty('textAlign') && this.props.labelStyle.textAlign === 'right') ? 5 : 0,
                         },
                         this.state.choice.label !== null && this.props.selectedLabelStyle,
-                        this.state.choice.icon ?? { marginLeft: 5 }
                     ]} {...this.props.labelProps}>
                         {multiple ? (
                             this.state.choice.length > 0 ? this.getNumberOfItems() : placeholder
@@ -501,25 +490,14 @@ class DropDownPicker extends React.Component {
                                         }),
                                         alignContent: 'center'
                                     }}>
-                                        {item.icon && item.icon()}
                                         <Text style={[
                                             this.props.labelStyle,
                                             multiple ?
                                                 (this.isSelected(item) && this.props.activeLabelStyle) : (this.state.choice.value === item.value && this.props.activeLabelStyle)
-                                            , {
-                                                ...(item.icon && {
-                                                    marginHorizontal: 5
-                                                })
-                                            }]} {...this.props.labelProps}>
+                                        ]} {...this.props.labelProps}>
                                             {this.getLabel(item)}
                                         </Text>
                                     </View>
-
-                                    {
-                                        this.state.props.multiple && this.state.choice.findIndex(i => i.label === item.label && i.value === item.value) > -1 && (
-                                            this.props.customTickIcon()
-                                        )
-                                    }
                                 </TouchableOpacity>
                                 {renderSeperator && index !== items.length - 1 && renderSeperator()}
                             </View>
@@ -553,7 +531,6 @@ DropDownPicker.defaultProps = {
     arrowSize: 15,
     customArrowUp: (size, color) => <Feather name="chevron-up" size={size} color={color} />,
     customArrowDown: (size, color) => <Feather name="chevron-down" size={size} color={color} />,
-    customTickIcon: () => <Feather name="check" size={15} />,
     zIndex: 5000,
     disabled: false,
     searchable: false,
