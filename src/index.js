@@ -16,7 +16,7 @@ Feather.loadFont();
 class DropDownPicker extends React.Component {
     constructor(props) {
         super(props);
-
+        console.log('DROPDOWN PROPS: ', props);
         let choice;
         let items = [];
         let defaultValueIndex; // captures index of first defaultValue for initial scrolling
