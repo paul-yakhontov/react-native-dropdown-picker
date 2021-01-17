@@ -9,6 +9,12 @@ import {
     TextInput
 } from 'react-native';
 
+import { TouchableOpacity as GHTouchableOpacity } from 'react-native-gesture-handler';
+
+// Icon
+import Feather from 'react-native-vector-icons/Feather';
+Feather.loadFont();
+
 class DropDownPicker extends React.Component {
     constructor(props) {
         super(props);
@@ -392,7 +398,7 @@ class DropDownPicker extends React.Component {
                     ]}
                 >
                     <Text style={[
-                        { color: 'red' }, // default label color
+                        { color: 'black' }, // default label color
                         this.props.labelStyle,
                         placeholderStyle, { opacity, flex: 1 }, {
                             marginLeft: (this.props.labelStyle.hasOwnProperty('textAlign') && this.props.labelStyle.textAlign === 'left') || !this.props.labelStyle.hasOwnProperty('textAlign') ? 5 : 0,
@@ -425,7 +431,7 @@ class DropDownPicker extends React.Component {
                     this.props.dropDownStyle,
                     !this.state.isVisible && styles.hidden, {
                         top: this.state.top,
-                        maxHeight: this.props.dropDownMaxHeight,
+                        // maxHeight: this.props.dropDownMaxHeight,
                         zIndex: this.props.zIndex
                     }
                 ]}>
@@ -449,7 +455,7 @@ class DropDownPicker extends React.Component {
                         )
                     }
 
-                    <ScrollView
+                    <View
                         style={{ width: '100%' }}
                         nestedScrollEnabled={true}
                         ref={ref => {
@@ -464,7 +470,7 @@ class DropDownPicker extends React.Component {
                                     this.dropdownCoordinates[index] = layout.y;
                                 }}
                             >
-                                <TouchableOpacity
+                                <GHTouchableOpacity
                                     key={index}
                                     onPress={() => this.select(item)}
                                     style={[styles.dropDownItem, this.props.itemStyle, (
@@ -498,7 +504,7 @@ class DropDownPicker extends React.Component {
                                             {this.getLabel(item)}
                                         </Text>
                                     </View>
-                                </TouchableOpacity>
+                                </GHTouchableOpacity>
                                 {renderSeperator && index !== items.length - 1 && renderSeperator()}
                             </View>
                         )) : (
@@ -506,7 +512,7 @@ class DropDownPicker extends React.Component {
                                     {this.props.searchableError()}
                                 </View>
                             )}
-                    </ScrollView>
+                    </View>
                 </View>
             </View>
         );
@@ -515,9 +521,9 @@ class DropDownPicker extends React.Component {
 
 DropDownPicker.defaultProps = {
     placeholder: 'Select an item',
-    dropDownMaxHeight: 150,
+    // dropDownMaxHeight: 150,
     style: {},
-    dropDownStyle: {},
+    dropDownStyle: { zIndex: 999, },
     containerStyle: {},
     itemStyle: {},
     labelStyle: {},
