@@ -22,11 +22,14 @@ class DropDownPicker extends React.Component {
         let defaultValueIndex; // captures index of first defaultValue for initial scrolling
         if (!props.multiple) {
             if (props.defaultValue || props.defaultValue === 0) {
-                choice = props.items.find(item => item.value === props.defaultValue);
+                choice = props.items.find(item => item.location.id === props.defaultValue);
+                console.log("choice1 ", choice);
             } else if (props.items.filter(item => item.hasOwnProperty('selected') && item.selected === true).length > 0) {
                 choice = props.items.filter(item => item.hasOwnProperty('selected') && item.selected === true)[0];
+                console.log("choice2 ", choice);
             } else {
                 choice = this.null();
+                console.log("choice3 ", choice);
             }
             defaultValueIndex = props.items.findIndex(item => item.value === props.defaultValue);
         } else {
@@ -41,11 +44,11 @@ class DropDownPicker extends React.Component {
             }
             defaultValueIndex = props.items.findIndex(item => item.value === props.defaultValue[0]);
         }
-
+        console.log('CHOICE: ', choice);
         this.state = {
             choice: props.multiple ? items : {
-                label: choice.label,
-                value: choice.value,
+                label: choice.location.name,
+                value: choice.location.id,
                 icon: choice.icon
             },
             searchableText: null,
@@ -226,7 +229,7 @@ class DropDownPicker extends React.Component {
                         }
                     });
                 } else {
-                    if (this.state.choice.value === value) {
+                    if (this.state.choice.location.id === value) {
                         this.reset();
                     }
                 }
@@ -351,8 +354,8 @@ class DropDownPicker extends React.Component {
         let label;
 
         if (typeof item === 'object') {
-            len = item.label.length;
-            label = item.label.substr(0, selected ? this.props.selectedLabelLength : this.props.labelLength);
+            len = item.location.name.length;
+            label = item.location.name.substr(0, selected ? this.props.selectedLabelLength : this.props.labelLength);
         } else if (item !== null && typeof item !== 'undefined') {
             len = item.length;
             label = item.substr(0, selected ? this.props.selectedLabelLength : this.props.labelLength);
